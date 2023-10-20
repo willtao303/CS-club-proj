@@ -5,7 +5,10 @@ using UnityEngine;
 public class PlayerScript : MonoBehaviour
 {
     [SerializeField]
-    private float playerSpeed = 0.2f;
+    private float playerSpeed = 2f;
+
+    [SerializeField]
+    private LayerMask layer;
     
     private Rigidbody2D playerRigidbody;
 
@@ -16,15 +19,25 @@ public class PlayerScript : MonoBehaviour
 
     void Update()
     {
-        Vector3 movement = Vector3.zero;
+        Vector2 final_vel = playerRigidbody.velocity;
+        float x_vel = 0f;
         if (Input.GetKey(KeyCode.LeftArrow)) {
-            movement += Vector3.left * playerSpeed;
+            x_vel -= playerSpeed;
         } else if (Input.GetKey(KeyCode.RightArrow)) {
-            movement += Vector3.right * playerSpeed;
-        } else if (Input.GetKey(KeyCode.UpArrow)) {
-            movement += Vector3.up * playerSpeed;
-        } else if (Input.GetKey(KeyCode.DownArrow)) {
-            movement += Vector3.down * playerSpeed;
+            x_vel += playerSpeed;
         }
+
+        if (playerRigidbody.velocity.x != x_vel){
+            final_vel.x = x_vel;
+        }
+        Debug.DrawLine(((Vector2)transform.position) + (Vector2.down/2.1f), ((Vector2)transform.position) + (Vector2.down/2.1f));
+        RaycastHit2D ray = Physics2D.Raycast(((Vector2)transform.position) + (Vector2.down/2.1f), Vector2.down, 0.1f, layer);
+        Debug.Log(ray.point);
+        // if there is no collider to hit, then the raycast didnt hit anything
+        if (ray.collider != null && Input.GetKey(KeyCode.UpArrow)) {
+            final_vel.y = 10f;
+        }
+
+        playerRigidbody.velocity = final_vel;
     }
 }
