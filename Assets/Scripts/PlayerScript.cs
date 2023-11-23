@@ -24,7 +24,8 @@ public class PlayerScript : MonoBehaviour
 
     // Components
     public Transform tf;
-    public Rigidbody2D rb;
+    [HideInInspector] public Rigidbody2D rb;
+    [HideInInspector] public Collider2D col;
     public Vector2 groundPos;
     public Vector2 vel = Vector2.zero;
 
@@ -40,9 +41,10 @@ public class PlayerScript : MonoBehaviour
 
     void Start()
     {
-        tf = this.transform;
+        tf = this.transform;// GetComponent<Transform>();
         groundPos = tf.position;
         rb = GetComponent<Rigidbody2D>();
+        col = GetComponent<Collider2D>();
 
         boxcast_size = tf.lossyScale*0.9f;
         boxcast_dist = tf.lossyScale.y*0.1f + 0.05f;
@@ -68,7 +70,6 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-    public bool grounded = false;
     void FixedUpdate(){// setting facing direciton
         if (Input.GetAxisRaw("Horizontal") != 0){
             facingDirection.x = (int)Input.GetAxisRaw("Horizontal");

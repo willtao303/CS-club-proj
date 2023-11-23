@@ -15,9 +15,9 @@ public class Stat {
     [SerializeField]
     private float raw_value;
     // the processed value of the stat
+    [ShowOnly]
     private float value;
     // the modifiers on this stat
-    [SerializeField]
     private HashSet<StatMod> modifiers = new HashSet<StatMod>();
 
     public Stat(float val){
